@@ -12,6 +12,29 @@ const getFilmsData = async ()=>{
         }
 }
 
+const paintGraph = (canvasName, AxisX, AxisY, tituloGrafica, empiezaEnCero) =>{
+  const ctx = document.getElementById(canvasName);
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: AxisX,
+        datasets: [{
+          label: tituloGrafica,
+          data: AxisY,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: empiezaEnCero
+          }
+        }
+      }
+    });
+  }
+
 const paintYearOfFilm = async () => {
     let titleFilm=[];
     let yearFilm=[];
@@ -20,32 +43,9 @@ const paintYearOfFilm = async () => {
         titleFilm.push(element.title);
         yearFilm.push(parseInt(element.release_date.substr(0,4)));
     })
-    paintGraph('myChart', titleFilm, yearFilm);
+    paintGraph('myChart', titleFilm, yearFilm, 'TITULO DE LA PELICULA VS AÑO DE LANZAMIENTO', false);
 }
 paintYearOfFilm()
-
-const paintGraph = (canvasName, AxisX, AxisY) =>{
-const ctx = document.getElementById(canvasName);
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: AxisX,
-      datasets: [{
-        label: 'Year of films',
-        data: AxisY,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: false
-        }
-      }
-    }
-  });
-}
 
 const getCharactersData = async() => {
     try{
@@ -72,6 +72,6 @@ const paintGraphCharacterEpisodes= async() => {
         console.log(element.films)
         numberEpisodesPerCharacter.push(element.films.length);
     })
-    paintGraph('myChart2', namesCharacter, numberEpisodesPerCharacter);
+    paintGraph('myChart2', namesCharacter, numberEpisodesPerCharacter, 'PERSONAJE VS NUMERO DE PELICULAS EN LAS QUE APARECE', true);
 }
 paintGraphCharacterEpisodes();
